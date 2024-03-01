@@ -1,14 +1,14 @@
 package dao;
 import entitys.Avion;
+import org.apache.log4j.Logger;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class AvionDAOH2 implements IDAO<Avion>{
     //Log4j logger configuration:
-    private static final Logger LOGGER = Logger.getLogger(AvionDAOH2.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AvionDAOH2.class);
 
     //Database configuration:
     private static final String DB_CONFIG_JDBC_DRIVER = "org.h2.Driver";
@@ -44,13 +44,13 @@ public class AvionDAOH2 implements IDAO<Avion>{
             }
             stmt.close();
         }catch (Exception e){
-            LOGGER.info("Error al buscar la lista completa de aviones en base de datos: " + e);
+            LOGGER.error("Error al buscar la lista completa de aviones en base de datos: ", e);
         }finally{
             try{
                 c.close();
             }catch (Exception ex){
-                LOGGER.info("Error al intentar cerrar conexión con base de datos" +
-                        "al buscar la lista completa de aviones: " + ex);
+                LOGGER.error("Error al intentar cerrar conexión con base de datos" +
+                        "al buscar la lista completa de aviones: ", ex);
             }
         }
         return aviones;
@@ -76,14 +76,14 @@ public class AvionDAOH2 implements IDAO<Avion>{
             }
             pstmt.close();
         }catch(Exception e){
-            LOGGER.info("Error al comunicarnos con la base de datos para buscar" +
-                    "un avion por su id: " + e);
+            LOGGER.error("Error al comunicarnos con la base de datos para buscar" +
+                    "un avion por su id: ", e);
         }finally{
             try{
                 c.close();
             }catch (Exception ex){
-                LOGGER.info("Error al intentar cerrar la conexión con la base de datos" +
-                        "al buscar un avion por su id: " + ex);
+                LOGGER.error("Error al intentar cerrar la conexión con la base de datos" +
+                        "al buscar un avion por su id: ", ex);
             }
         }
         return avionBuscado;
@@ -106,19 +106,19 @@ public class AvionDAOH2 implements IDAO<Avion>{
             c.commit();
             pstmt.close();
         }catch(Exception e){
-            LOGGER.info("Error al guardar avion en la base de datos: " + e);
+            LOGGER.error("Error al guardar avion en la base de datos: ", e);
             try{
                 c.rollback();
             }catch (Exception ex){
-                LOGGER.info("No se pudo ejecutar el rollback en defensa del" +
-                        "error debido a no poder guardar el avion en la base de datos: " + ex);
+                LOGGER.error("No se pudo ejecutar el rollback en defensa del" +
+                        "error debido a no poder guardar el avion en la base de datos: ", ex);
             }
         }finally{
             try{
                 c.close();
             }catch(Exception exc){
-                LOGGER.info("Error al intentar cerrar la conexión con la base de datos luego" +
-                        "de guardar el avion en la misma: " + exc);
+                LOGGER.error("Error al intentar cerrar la conexión con la base de datos luego" +
+                        "de guardar el avion en la misma: ", exc);
             }
         }
     }
@@ -135,19 +135,19 @@ public class AvionDAOH2 implements IDAO<Avion>{
             pstmt.executeUpdate();
             //c.commit();
         }catch(Exception e){
-            LOGGER.info("Error al intentar eliminar un avion de la base de datos: " + e);
+            LOGGER.error("Error al intentar eliminar un avion de la base de datos: ", e);
             try{
                 c.rollback();
             }catch(Exception ex){
-                LOGGER.info("Error al intentar rollback luego del error al intentar" +
-                        "de eliminar un avion de la base de datos: " + ex);
+                LOGGER.error("Error al intentar rollback luego del error al intentar" +
+                        "de eliminar un avion de la base de datos: ", ex);
             }
         }finally{
             try{
                 c.close();
             }catch (Exception exc){
-                LOGGER.info("Error al intentar cerrar la conexión con la base de datos" +
-                        "luego de eliminar un avion de la misma: " + exc);
+                LOGGER.error("Error al intentar cerrar la conexión con la base de datos" +
+                        "luego de eliminar un avion de la misma: ", exc);
             }
         }
     }
